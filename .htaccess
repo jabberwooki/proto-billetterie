@@ -144,6 +144,6 @@ DirectoryIndex index.php index.html index.htm
   # C.Espiau - 04/12/14
   # Use the robots.exclude.txt files instead of original robots.txt file
   # on staging servers listed in rewrite conditions.
-  RewriteCond %{HTTP_HOST} ^*\.korora\.fr$ [NC]
+  RewriteCond %{HTTP_HOST} ^billetterie\.korora\.fr$ [NC]
   RewriteRule ^robots\.txt /robots.exclude.txt
 </IfModule>
