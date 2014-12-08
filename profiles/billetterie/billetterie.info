@@ -55,5 +55,5 @@ dependencies[] = views
 
 ; Features.
 dependencies[] = feature_theme
-;dependencies[] = feature_core
-;dependencies[] = feature_pages
+dependencies[] = feature_core
+dependencies[] = feature_pages
