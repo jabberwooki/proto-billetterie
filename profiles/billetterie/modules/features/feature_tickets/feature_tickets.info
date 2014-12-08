@@ -1,0 +1,15 @@
+name = Feature Tickets
+description = Ticket Office Prototype for domaine d'O
+core = 7.x
+package = App
+version = 7.x-1.0
+project = feature_tickets
+dependencies[] = colorbox
+dependencies[] = feature_core
+dependencies[] = features
+dependencies[] = menu
+dependencies[] = rsi_ws
+features[features_api][] = api:2
+features[menu_links][] = main-menu_spectacles:ticket-office-shows
+mtime = 1418049642
+project path = profiles/billetterie/modules/features
