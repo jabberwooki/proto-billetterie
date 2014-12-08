@@ -1,0 +1,167 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function rsi_ws_menu() {
+	$items = array();
+	
+	$items['admin/config/services/rsi'] = array(
+			'title' => t('RSI Webservices'),
+			'description' => 'RSI webservices settings',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('rsi_ws_settings_form'),
+			'access arguments' => array('administer RSI'),
+			'file' => 'rsi_ws.admin.inc',
+			'type' => MENU_NORMAL_ITEM,
+	);
+	$items['ticket-office-shows'] = array(
+			'title' => t('Shows list'),
+			'page callback' => 'rsi_shows_list',
+			'access arguments' => array('access RSI'),
+			'type' => MENU_NORMAL_ITEM,
+	);
+	$items['ticket-office-show/%'] = array(
+			'title' => t('Show details'),
+			'page callback' => 'rsi_show',
+			'access arguments' => array('access RSI'),
+			'type' => MENU_NORMAL_ITEM,
+	);
+	$items['ticket-office-event/%'] = array(
+			'title' => t('Event details'),
+			'page callback' => 'rsi_event',
+			'access arguments' => array('access RSI'),
+			'type' => MENU_NORMAL_ITEM,
+	);
+	
+	return $items;
+}
+
+/**
+ * Callback functions.
+ */
+
+function rsi_shows_list() {
+	$shows = rsi_get_shows();
+
+	$items = array();
+	foreach ($shows as $show) {
+		//$show_id = str_replace('spectacle-', '', $show['UID']);
+		$url = $show['URL'] . '&width=1000&height=800&iframe=true';
+		$item = l($show['SUMMARY'], $url, array('attributes' => array('class' => array('colorbox-load'))));
+		$items[] = $item;
+	}
+	
+	$variables = array(
+		'items' => $items,
+		'type' => 'ul',
+	);
+	return theme('item_list', $variables);
+}
+
+function rsi_show() {
+	$show = rsi_get_show(arg(1));
+	//dpm($show);
+	
+	$output = '';
+	$output .= theme('html_tag', array(
+		'element' => array(
+			'#tag' => 'h2',
+			'#value' => $show[0]['SUMMARY'],
+		),
+	));
+	$output .= theme('html_tag', array(
+			'element' => array(
+					'#tag' => 'span',
+					'#value' => $show[0]['X_RSI_LOCATION'],
+			),
+	));
+	$items = array();
+	foreach ($show as $event) {
+		$event_date = format_date(strtotime($event['DTSTART']), 'custom', 'l d F Y - H\hi');
+		$item = l($event_date, 'ticket-office-event/' . $event['X_RSI_REPRESENTATION_ID']);
+		$items[] = $item;
+	}
+	
+	//return 'DETAILS SPECTACLE';
+	$variables = array(
+			'items' => $items,
+			'title' => t('Select an event'),
+			'type' => 'ul',
+	);
+	$output .= theme('item_list', $variables);
+	
+	return $output;
+}
+
+function rsi_event() {
+	$event = rsi_get_event(arg(1));
+	dpm($event);
+	return 'DETAILS REPRESENTATION';
+}
+
+/**
+ * Helper functions.
+ */
+
+function rsi_get_shows() {
+	$boxoffice_domain = variable_get('rsi_ws_url', '');
+	if ($boxoffice_domain == '') {
+		return t(
+				'RSI webservices are not set up yet. Go to <a href="@link">admin page</a> and set them up.',
+				array('@link' => url('admin/config/services/rsi')
+				)
+		);
+	}
+	$ws_list_name = variable_get('rsi_ws_show_list_name', '');
+	$url = $boxoffice_domain . $ws_list_name;
+	
+	return rsi_get_ws_data('list', $url);
+}
+
+function rsi_get_show($show_id) {
+	$boxoffice_domain = variable_get('rsi_ws_url', '');
+	$ws_show_name = variable_get('rsi_ws_show_name', '');
+	$url = $boxoffice_domain . $ws_show_name . '?id_spectacle=' . $show_id;
+	
+	return rsi_get_ws_data('show', $url);
+}
+
+function rsi_get_event($event_id) {
+	$boxoffice_domain = variable_get('rsi_ws_url', '');
+	$ws_event_name = variable_get('rsi_ws_event_name', '');
+	$url = $boxoffice_domain . $ws_event_name . '?id_event=' . $event_id;
+
+	return rsi_get_ws_data('event', $url);
+}
+
+function rsi_get_ws_data($type, $url) {
+// 	// first access to catch session cookie
+// 	$http_resp1 = drupal_http_request($url);
+// 	$cookie_data = explode(';', $http_resp1->headers['set-cookie']);
+// 	$options = array(
+// 			'headers' => array(
+// 					'Cookie' => $cookie_data[0] . ';sessionstate=1',
+// 			),
+// 	);
+// 	// second access, using the session cookie, to get data.
+// 	$http_resp2 = drupal_http_request($url, $options);
+// 	$json = $http_resp2->data;
+// 	$data = drupal_json_decode($json);
+
+	$response = drupal_http_request($url);
+	$data = drupal_json_decode($response->data);
+	
+	switch ($type) {
+		case 'list':
+			return $data['vcalendar']['VEVENT'];
+			break;
+		case 'show' :
+			return $data['vcalendar']['VEVENT'];
+			break;
+		default:
+			return $data;
+	}
+}
+
+
+

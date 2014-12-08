@@ -1,0 +1,5 @@
+name = Ressources SI Webservices
+description = "Provides Ressources SI Webservices integration"
+package = Ressources SI
+core = 7.x
+version = 7.x-0.1

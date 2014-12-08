@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Feature Tickets feature.
+ */
+
+include_once 'feature_tickets.features.inc';
