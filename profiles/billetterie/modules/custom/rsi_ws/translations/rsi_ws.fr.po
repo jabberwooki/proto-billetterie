@@ -1,0 +1,106 @@
+# $Id$
+#
+# French translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  rsi_ws.admin.inc: n/a
+#  rsi_ws.module: n/a
+#  rsi_ws.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-12-09 12:21+0100\n"
+"PO-Revision-Date: 2014-12-09 12:21+0100\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: French <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+#: rsi_ws.admin.inc:5
+msgid "Ticket Office"
+msgstr "Billetterie"
+
+#: rsi_ws.admin.inc:9
+msgid "Ticket Office URL"
+msgstr "URL billetterie"
+
+#: rsi_ws.admin.inc:16
+msgid "Webservices names"
+msgstr "Noms des webservices"
+
+#: rsi_ws.admin.inc:20
+msgid "Programmation webservice"
+msgstr "Webservice 'Programmation'"
+
+#: rsi_ws.admin.inc:26
+msgid "Shows List webservice"
+msgstr "Webservice 'Liste des spectacles'"
+
+#: rsi_ws.admin.inc:32
+msgid "Show details webservice"
+msgstr "Webservice 'Détails spectacle'"
+
+#: rsi_ws.admin.inc:38
+msgid "Show's event webservice"
+msgstr "Webservice 'Représentation spectacle'"
+
+#: rsi_ws.admin.inc:45
+msgid "RSI Webservices access credentials"
+msgstr "Identifiants d'accès aux webservices RSI"
+
+#: rsi_ws.admin.inc:49
+msgid "Login"
+msgstr "Identifiant"
+
+#: rsi_ws.admin.inc:55
+msgid "Password"
+msgstr "Mot de passe"
+
+#: rsi_ws.admin.inc:61
+msgid "Client number"
+msgstr "Numéro client"
+
+#: rsi_ws.module:9
+msgid "RSI Webservices"
+msgstr "Webservices RSI"
+
+#: rsi_ws.module:18
+msgid "Shows list"
+msgstr "Liste des spectacles"
+
+#: rsi_ws.module:24
+msgid "Show details"
+msgstr "Détails spectacle"
+
+#: rsi_ws.module:30
+msgid "Event details"
+msgstr "Détails représentation"
+
+#: rsi_ws.module:88
+msgid "Select an event"
+msgstr "Sélectionner une représentation"
+
+#: rsi_ws.module:109
+msgid "RSI webservices are not set up yet. Go to <a href=\"@link\">admin page</a> and set them up."
+msgstr "Les webservices RSI ne sont pas encore paramétrés. Rendez-vous sur <a href=\"@link\">la page d'administration</a> et procédez au paramétrage."
+
+#: rsi_ws.module:10
+msgid "RSI webservices settings"
+msgstr "Paramétrages des webservices RSI"
+
+#: rsi_ws.info:0
+msgid "Ressources SI Webservices"
+msgstr "Webservices Ressources SI"
+
+#: rsi_ws.info:0
+msgid "Provides Ressources SI Webservices integration"
+msgstr "Fournit l'intégration des webservices Ressources SI"
+
+#: rsi_ws.info:0
+msgid "Ressources SI"
+msgstr ""
+

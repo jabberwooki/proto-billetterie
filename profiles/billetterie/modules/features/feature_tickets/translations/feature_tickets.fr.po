@@ -1,0 +1,62 @@
+# $Id$
+#
+# French translation of Drupal (Ressources SI module)
+# Copyright 2014 C.Espiau <christophe.espiau@gmail.com>
+# Generated from files:
+#  feature_tickets.features.menu_links.inc: n/a
+#  feature_tickets.module: n/a
+#  feature_tickets.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-12-09 13:52+0100\n"
+"PO-Revision-Date: 2014-12-09 13:52+0100\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: French <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+#: feature_tickets.features.menu_links.inc:35
+msgid "Spectacles"
+msgstr ""
+
+#: feature_tickets.module:16
+msgid "Ressources SI - User links"
+msgstr "Ressources SI - Liens utilisateur"
+
+#: feature_tickets.module:20
+msgid "Ressources SI - Terms of sale"
+msgstr "Ressources SI - Conditions générales"
+
+#: feature_tickets.module:37
+msgid "My account"
+msgstr "Mon compte"
+
+#: feature_tickets.module:42
+msgid "Subscription"
+msgstr "Abonnement"
+
+#: feature_tickets.module:45
+msgid "My basket"
+msgstr "Mon panier"
+
+#: feature_tickets.module:60
+msgid "Terms of sale"
+msgstr "Conditions générales billetterie"
+
+#: feature_tickets.info:0
+msgid "Feature Tickets"
+msgstr ""
+
+#: feature_tickets.info:0
+msgid "Ticket Office Prototype for domaine d'O"
+msgstr "Prototype Billetterie pour le domaine d'O"
+
+#: feature_tickets.info:0
+msgid "App"
+msgstr ""
+
