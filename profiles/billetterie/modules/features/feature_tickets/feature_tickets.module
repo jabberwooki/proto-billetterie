@@ -5,3 +5,65 @@
  */
 
 include_once 'feature_tickets.features.inc';
+
+/**
+ * Implements hook_block_info().
+ */
+function feature_tickets_block_info() {
+	$blocks = array();
+
+	$blocks['rsi_ws_user_links'] = array(
+			'info' => t('Ressources SI - User links'),
+			'cache' => DRUPAL_NO_CACHE,
+	);
+	$blocks['rsi_ws_ts'] = array(
+			'info' => t('Ressources SI - Terms of sale'),
+			'cache' => DRUPAL_NO_CACHE,
+	);
+	return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function feature_tickets_block_view($delta = '') {
+	switch ($delta) {
+		case 'rsi_ws_user_links':
+			$block['subject'] = '';
+			
+			$url = variable_get('rsi_ws_url', '/');
+			// Account link
+			$acount_url = $url . 'account_home?lng=1&width=1000&height=800&iframe=true';
+			$items[] = l(t('My account'), $acount_url, array('attributes' => array('class' => array('colorbox-load'))));
+			// Subscription link
+			$prog = rsi_get_programmation();
+			$ident = $prog['ABONNEMENTS']['ABONNEMENT']['@attributes']['IDENT'];
+			$subscription_url = $url . 'abonnement?lng=1&id_abonnement=' . $ident . '&width=1000&height=800&iframe=true';
+			$items[] = l(t('Subscription'), $subscription_url, array('attributes' => array('class' => array('colorbox-load'))));
+			// Basket link
+			$basket_url = $url . 'basket?lng=1&width=1000&height=800&iframe=true';
+			$items[] = l(t('My basket'), $basket_url, array('attributes' => array('class' => array('colorbox-load'))));
+				
+			$variables = array(
+				'items' => $items,
+				'type' => 'ul',
+				'attributes' => array('class' => 'menu nav navbar user-links'),
+			);
+			$block['content'] = theme('item_list', $variables);
+			return $block;
+			break;
+		case 'rsi_ws_ts':
+			$block['subject'] = '';
+			
+			$url = variable_get('rsi_ws_url', '/');
+			$url .= 'conditions_gene?lng=1&width=1000&height=800&iframe=true';
+			$items[] = l(t('Terms of sale'), $url, array('attributes' => array('class' => array('colorbox-load'))));
+			$variables = array(
+				'items' => $items,
+				'type' => 'ul',
+				'attributes' => array('class' => 'menu nav terms-of-sale'),
+			);
+			$block['content'] = theme('item_list', $variables);
+			return $block;
+	}
+}

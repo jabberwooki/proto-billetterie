@@ -15,5 +15,4 @@ features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
 features[menu_links][] = main-menu_spectacles:ticket-office-shows
 features[variable][] = colorbox_load
-mtime = 1418052841
 project path = profiles/billetterie/modules/features

@@ -6,6 +6,9 @@
 .region-navigation {
 	float: right;
 }
+.user-links li {
+	float: right;
+}
 .block-feature-tickets {
   float: right;
 }
