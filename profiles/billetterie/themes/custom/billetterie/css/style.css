@@ -2,3 +2,16 @@
  * This file should get overwritten if Method 1 is used. If Method 2 is chosen,
  * remove this comment and start adding your styles to this file.
  */
+
+.region-navigation {
+	float: right;
+}
+.block-feature-tickets {
+  float: right;
+}
+header {
+	color: white;
+	background-color: #888;
+	padding: 5px;
+	margin-bottom: 20px;
+}

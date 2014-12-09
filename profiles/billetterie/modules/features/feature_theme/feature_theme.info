@@ -10,5 +10,4 @@ features[features_api][] = api:2
 features[variable][] = node_admin_theme
 features[variable][] = theme_billetterie_settings
 features[variable][] = theme_default
-mtime = 1418030713
 project path = profiles/billetterie/modules/features
