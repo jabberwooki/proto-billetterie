@@ -6,7 +6,7 @@ function rsi_ws_menu() {
 	$items = array();
 	
 	$items['admin/config/services/rsi'] = array(
-			'title' => t('RSI Webservices'),
+			'title' => 'RSI Webservices',
 			'description' => 'RSI webservices settings',
 			'page callback' => 'drupal_get_form',
 			'page arguments' => array('rsi_ws_settings_form'),
@@ -15,21 +15,21 @@ function rsi_ws_menu() {
 			'type' => MENU_NORMAL_ITEM,
 	);
 	$items['ticket-office-shows'] = array(
-			'title' => t('Shows list'),
+			'title' => 'Shows list',
 			'page callback' => 'rsi_shows_list',
-			'access arguments' => array('access RSI'),
+			'access arguments' => array('access content'),
 			'type' => MENU_NORMAL_ITEM,
 	);
 	$items['ticket-office-show/%'] = array(
-			'title' => t('Show details'),
+			'title' => 'Show details',
 			'page callback' => 'rsi_show',
-			'access arguments' => array('access RSI'),
+			'access arguments' => array('access content'),
 			'type' => MENU_NORMAL_ITEM,
 	);
 	$items['ticket-office-event/%'] = array(
-			'title' => t('Event details'),
+			'title' => 'Event details',
 			'page callback' => 'rsi_event',
-			'access arguments' => array('access RSI'),
+			'access arguments' => array('access content'),
 			'type' => MENU_NORMAL_ITEM,
 	);
 	
@@ -44,9 +44,10 @@ function rsi_shows_list() {
 	$shows = rsi_get_shows();
 
 	$items = array();
+	$popup_width = variable_get('rsi_popup_width', '');
+	$popup_height = variable_get('rsi_popup_height', '');
 	foreach ($shows as $show) {
-		//$show_id = str_replace('spectacle-', '', $show['UID']);
-		$url = $show['URL'] . '&width=1000&height=800&iframe=true';
+		$url = $show['URL'] . '&width=' . $popup_width . '&height=' . $popup_height . '&iframe=true';
 		$item = l($show['SUMMARY'], $url, array('attributes' => array('class' => array('colorbox-load'))));
 		$items[] = $item;
 	}
@@ -134,6 +135,17 @@ function rsi_get_event($event_id) {
 	return rsi_get_ws_data('event', $url);
 }
 
+function rsi_get_programmation() {
+	$boxoffice_domain = variable_get('rsi_ws_url', '');
+	$ws_prog = variable_get('rsi_ws_prog', '');
+	$ws_login  = variable_get('rsi_login', '');
+	$ws_pass = variable_get('rsi_pass', '');
+	$ws_client = variable_get('rsi_client', '');
+	$url = $boxoffice_domain . $ws_prog . '?x_rsi_ws_login=' . $ws_login . '&x_rsi_ws_mdp=' . $ws_pass . '&x_rsi_client=' . $ws_client; 
+	
+	return rsi_get_ws_data('prog', $url);
+}
+
 function rsi_get_ws_data($type, $url) {
 // 	// first access to catch session cookie
 // 	$http_resp1 = drupal_http_request($url);
@@ -149,13 +161,19 @@ function rsi_get_ws_data($type, $url) {
 // 	$data = drupal_json_decode($json);
 
 	$response = drupal_http_request($url);
-	$data = drupal_json_decode($response->data);
 	
 	switch ($type) {
+		case 'prog':
+			$data = new SimpleXMLElement($response->data);
+			$data = drupal_json_decode(drupal_json_encode($data));
+			return $data;
+			break;
 		case 'list':
+			$data = drupal_json_decode($response->data);
 			return $data['vcalendar']['VEVENT'];
 			break;
 		case 'show' :
+			$data = drupal_json_decode($response->data);
 			return $data['vcalendar']['VEVENT'];
 			break;
 		default:
