@@ -42,13 +42,20 @@ function rsi_ws_menu() {
 
 function rsi_shows_list() {
 	$shows = rsi_get_shows();
-
+	
 	$items = array();
 	$popup_width = variable_get('rsi_popup_width', '');
 	$popup_height = variable_get('rsi_popup_height', '');
-	foreach ($shows as $show) {
-		$url = $show['URL'] . '&width=' . $popup_width . '&height=' . $popup_height . '&iframe=true';
-		$item = l($show['SUMMARY'], $url, array('attributes' => array('class' => array('colorbox-load'))));
+// 	foreach ($shows as $show) {
+// 		$url = $show['URL'] . '&width=' . $popup_width . '&height=' . $popup_height . '&iframe=true';
+// 		$item = l($show['SUMMARY'], $url, array('attributes' => array('class' => array('colorbox-load'))));
+// 		$items[] = $item;
+// 	}
+	$boxoffice_domain = rsi_get_domain();
+	foreach($shows as $show) {
+		$id_spectacle = $show['@attributes']['IDENT'];
+		$url = $boxoffice_domain . 'spectacle?id_spectacle=' . $id_spectacle . '&width=' . $popup_width . '&height=' . $popup_height . '&iframe=true';
+		$item = l($show['@attributes']['NOM'], $url, array('attributes' => array('class' => array('colorbox-load'))));
 		$items[] = $item;
 	}
 	
@@ -105,8 +112,8 @@ function rsi_event() {
  */
 
 function rsi_get_shows() {
-	$boxoffice_domain = variable_get('rsi_ws_url', '');
-	if ($boxoffice_domain == '') {
+	$boxoffice_domain = rsi_get_domain();
+	if ($boxoffice_domain == '/') {
 		return t(
 				'RSI webservices are not set up yet. Go to <a href="@link">admin page</a> and set them up.',
 				array('@link' => url('admin/config/services/rsi')
@@ -114,13 +121,13 @@ function rsi_get_shows() {
 		);
 	}
 	$ws_list_name = variable_get('rsi_ws_show_list_name', '');
-	$url = $boxoffice_domain . $ws_list_name;
-	
+	$credentials = rsi_ws_credentials();
+	$url = $boxoffice_domain . $ws_list_name . '?' . $credentials;
 	return rsi_get_ws_data('list', $url);
 }
 
 function rsi_get_show($show_id) {
-	$boxoffice_domain = variable_get('rsi_ws_url', '');
+	$boxoffice_domain = rsi_get_domain();
 	$ws_show_name = variable_get('rsi_ws_show_name', '');
 	$url = $boxoffice_domain . $ws_show_name . '?id_spectacle=' . $show_id;
 	
@@ -128,7 +135,7 @@ function rsi_get_show($show_id) {
 }
 
 function rsi_get_event($event_id) {
-	$boxoffice_domain = variable_get('rsi_ws_url', '');
+	$boxoffice_domain = rsi_get_domain();
 	$ws_event_name = variable_get('rsi_ws_event_name', '');
 	$url = $boxoffice_domain . $ws_event_name . '?id_event=' . $event_id;
 
@@ -136,7 +143,7 @@ function rsi_get_event($event_id) {
 }
 
 function rsi_get_programmation() {
-	$boxoffice_domain = variable_get('rsi_ws_url', '');
+	$boxoffice_domain = rsi_get_domain();
 	$ws_prog = variable_get('rsi_ws_prog', '');
 	$ws_login  = variable_get('rsi_login', '');
 	$ws_pass = variable_get('rsi_pass', '');
@@ -169,8 +176,11 @@ function rsi_get_ws_data($type, $url) {
 			return $data;
 			break;
 		case 'list':
-			$data = drupal_json_decode($response->data);
-			return $data['vcalendar']['VEVENT'];
+// 			$data = drupal_json_decode($response->data);
+// 			return $data['vcalendar']['VEVENT'];
+			$data = new SimpleXMLElement($response->data);
+			$data = drupal_json_decode(drupal_json_encode($data));
+			return $data['SPECTACLES']['SPECTACLE'];
 			break;
 		case 'show' :
 			$data = drupal_json_decode($response->data);
@@ -179,6 +189,22 @@ function rsi_get_ws_data($type, $url) {
 		default:
 			return $data;
 	}
+}
+
+function rsi_ws_credentials () {
+	$ws_login  = variable_get('rsi_login', '');
+	$ws_pass = variable_get('rsi_pass', '');
+	$ws_client = variable_get('rsi_client', '');
+	
+	return 'x_rsi_ws_login=' . $ws_login . '&x_rsi_ws_mdp=' . $ws_pass . '&x_rsi_client=' . $ws_client;
+}
+
+function rsi_get_domain() {
+	$domain = variable_get('rsi_ws_url', '');
+	if ($domain{strlen($domain) -1} != '/') {
+		return $domain . '/';
+	}
+	return $domain;
 }
 
 

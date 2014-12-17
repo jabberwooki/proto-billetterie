@@ -31,7 +31,7 @@ function feature_tickets_block_view($delta = '') {
 		case 'rsi_ws_user_links':
 			$block['subject'] = '';
 			
-			$url = variable_get('rsi_ws_url', '/');
+			$url = rsi_get_domain();
 			// Account link
 			$acount_url = $url . 'account_home?lng=1&width=1000&height=800&iframe=true';
 			$items[] = l(t('My account'), $acount_url, array('attributes' => array('class' => array('colorbox-load'))));
